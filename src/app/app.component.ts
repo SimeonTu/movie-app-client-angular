@@ -25,7 +25,7 @@ export class AppComponent {
   openUserRegistrationDialog(): void {
     console.log("clicked");
 
-    let test = this.dialog.open(UserRegistrationFormComponent, {
+    this.dialog.open(UserRegistrationFormComponent, {
       // Assigning the dialog a width
       width: '280px'
     });
