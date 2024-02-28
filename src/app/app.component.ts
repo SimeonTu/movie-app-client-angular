@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
+import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -19,14 +20,30 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent {
   title = 'IFDb-Angular-client';
 
+
   constructor(public dialog: MatDialog) { }
+
+  // ngOnInit(): void {
+  //   this.dialog.open(UserRegistrationFormComponent, {
+  //     // Assigning the dialog a width
+  //     width: '280px'
+  //   });
+  // }
 
   // This is the function that will open the dialog when the signup button is clicked  
   openUserRegistrationDialog(): void {
-    console.log("clicked");
+    console.log("test");
 
     this.dialog.open(UserRegistrationFormComponent, {
-      // Assigning the dialog a width
+      width: '280px'
+    });
+  }
+
+  // This is the function that will open the dialog when the signup button is clicked  
+  openUserLoginDialog(): void {
+    console.log("test2");
+
+    this.dialog.open(UserLoginFormComponent, {
       width: '280px'
     });
   }
