@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, catchError, map } from 'rxjs';
+import { Observable, throwError, catchError, map, mergeMap, forkJoin, EMPTY } from 'rxjs';
+import { log } from 'console';
 
 //Declaring the api url that will provide data for the client app
 const apiUrl = 'https://fathomless-everglades-10625-ad628eacb5b5.herokuapp.com/https://ifdbase-c6a1086fce3e.herokuapp.com/';
@@ -29,26 +30,74 @@ export class IFDbAPIservice {
     );
   }
 
+  // get all movies from IFDb api and then attach image URLs to each movie object from TFDb
   getAllMovies(): Observable<any> {
-    const token = localStorage.getItem('token');
+    // only execute when in browser, otherwise we get localStorage is not defined error, as localStorage is not a thing on the backend
+    if (typeof window !== 'undefined') {
+
+    const token = localStorage.getItem('token')
     return this.http.get(apiUrl + 'movies', {
       headers: new HttpHeaders(
         {
-          Authorization: 'Bearer ' + token,
+          Authorization: `Bearer ${token}`,
         })
     }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+      mergeMap((movies: any) => {
+        console.log(movies);
+
+        let mappedMovies = movies.map((movie: any) => {
+          return {
+            id: movie._id,
+            title: movie.Title,
+            description: movie.Description,
+            genre: movie.Genre,
+            director: movie.Director,
+            releaseYear: movie.ReleaseYear,
+            rating: movie.Rating,
+            featured: movie.Featured,
+          };
+        })
+
+        const TFDBoptions = {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MTI4MTNmMzRhNWFiYzdjYmU0YjE1NzZkMGIyYmY1MSIsInN1YiI6IjY1OGYzZmUwZDUxOTFmNmExZDI3MDcwZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ybplmx9CH6yhdA36BEjUrppLyGMMPtjLxPy1cU-Z_c4'
+          }
+        };
+
+        let requests = mappedMovies.map((movie: any) => {
+          return this.http.get(`https://api.themoviedb.org/3/search/movie?query=${movie.title}&language=en-US&page=1`, TFDBoptions)
+        })
+
+        console.log(requests);
+
+
+        return forkJoin(requests).pipe(
+          map((responses: any[]) => {
+            console.log(responses);
+            // return responses
+            return mappedMovies.map((mappedMovie: any, index: number) => {
+              return {
+                ...mappedMovie,
+                image: responses[index].results.length > 0 ? `http://image.tmdb.org/t/p/w500${responses[index].results[0].poster_path}` : null
+              };
+            });
+          }) as any
+        )
+
+      })
+    )
+    } else return EMPTY //return empty observable if code is not run in browser
   }
 
-  private extractResponseData(res: Object): any {
-    const body = res;
-    return body || {};
+  private extractResponseData(res: any): any {
+    const body = res
+    return body || {}
   }
 
   getOneMovie(title: string): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.get(apiUrl + 'movies/' + title, {
       headers: new HttpHeaders(
         {
@@ -61,7 +110,7 @@ export class IFDbAPIservice {
   }
 
   getGenre(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.get(apiUrl + 'movies/genre/:Name', {
       headers: new HttpHeaders(
         {
@@ -74,12 +123,13 @@ export class IFDbAPIservice {
   }
 
   getUser(): Observable<any> {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    //checking if code is running in the browser to avoid getting "localStorage is not defined"
+    const user = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || '{}') : null;
     return user;
   }
 
   getFavouriteMovies(username: string): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.get(apiUrl + 'users/' + username, {
       headers: new HttpHeaders(
         {
@@ -92,8 +142,8 @@ export class IFDbAPIservice {
   }
 
   addFavouriteMovies(movie: any): Observable<any> {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const token = localStorage.getItem('token');
+    const user = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || '{}') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     console.log('in fetch api service: ', movie);
     console.log('in fetch api service_id: ', movie._id);
     return this.http.post(apiUrl + 'users/' + user.Username + '/movies/' + movie._id, null, {
@@ -109,7 +159,7 @@ export class IFDbAPIservice {
 
   editUser(userDetails: any): Observable<any> {
     console.log(userDetails);
-    const token = localStorage.getItem('token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.put(apiUrl + 'users/' + userDetails.Username, userDetails, {
       headers: new HttpHeaders(
         {
@@ -122,8 +172,8 @@ export class IFDbAPIservice {
   }
 
   deleteUser(): Observable<any> {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const token = localStorage.getItem('token');
+    const user = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || '{}') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.delete(apiUrl + 'users/' + user.Username, {
       headers: new HttpHeaders(
         {
@@ -136,8 +186,8 @@ export class IFDbAPIservice {
   }
 
   deleteFavouriteMovies(movie: any): Observable<any> {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const token = localStorage.getItem('token');
+    const user = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || '{}') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     console.log('in fetch api service: ', movie._id);
     return this.http.delete(apiUrl + 'users/' + user.Username + '/movies/' + movie._id, {
       headers: new HttpHeaders(

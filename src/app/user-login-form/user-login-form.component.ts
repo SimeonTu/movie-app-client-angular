@@ -18,6 +18,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from '../app.component';
 
+import { Router } from '@angular/router';
+
 @Component({
   standalone: true,
   imports: [MatInputModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatDialogModule, MatSnackBarModule, FormsModule],
@@ -32,7 +34,8 @@ export class UserLoginFormComponent implements OnInit {
   constructor(
     public fetchApiData: IFDbAPIservice,
     public dialogRef: MatDialogRef<AppComponent>,
-    public snackBar: MatSnackBar) { }
+    public snackBar: MatSnackBar,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -40,16 +43,25 @@ export class UserLoginFormComponent implements OnInit {
   // This is the function responsible for sending the form inputs to the backend
   login(): void {
     this.fetchApiData.userLogin(this.userData).subscribe((result) => {
-      console.log(result);
       // Logic for a successful user registration goes here! (To be implemented)
-      this.dialogRef.close(); // This will close the modal on success!
+      
+      console.log(result);
 
+      // save username and token in local storage
+      localStorage.setItem("user", result.user.Username)
+      localStorage.setItem("token", result.token)
+      
+      // This will close the modal on success!
+      this.dialogRef.close();
+
+      // display success snackbar
       this.snackBar.open("Successfully logged in.", 'OK', {
         duration: 2000
       });
+      this.router.navigate(["movies"])
     }, (result) => {
       console.log(result);
-      this.snackBar.open("nope", 'OK', {
+      this.snackBar.open("There was a problem with logging in, please try again later.", 'OK', {
         duration: 2000
       });
     });
