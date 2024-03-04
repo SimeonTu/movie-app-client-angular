@@ -18,7 +18,7 @@
                 <mat-card>
 
                     <div style="width: 240px;" class="movie-card__image-container placeholder">
-                        <!-- <img src="../../assets/heart.png"
+                        <!-- <img src="assets/heart.png"
                             style="position: absolute; top: 10px; right: 10px; z-index: 9999; width: 24px; opacity: 0.9" /> -->
 
                         <div style="width: 100%; height: 350px;"></div>
@@ -53,15 +53,15 @@
                             <div class="movie-card__image-container">
                                 <img *ngIf="isFavorited(movie) === true" (click)="toggleFavorite(movie)"
                                     [style.pointerEvents]="favDisabled ? 'none' : 'auto'"
-                                    src="../../assets/heart-full.png"
+                                    src="assets/heart-full.png"
                                     style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 1" />
                                 <img *ngIf="isFavorited(movie) === false" (click)="toggleFavorite(movie)"
-                                    [style.pointerEvents]="favDisabled ? 'none' : 'auto'" src="../../assets/heart.png"
+                                    [style.pointerEvents]="favDisabled ? 'none' : 'auto'" src="assets/heart.png"
                                     style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 0.85" />
 
                                 <div class="imdb-rating-container">
                                     <div class="imdb-bubble">
-                                        <img class="imdb-svg" src="../../assets/imdb.svg" />
+                                        <img class="imdb-svg" src="assets/imdb.svg" />
                                         <div class="imdb-corner">
                                         </div>
                                     </div>
@@ -95,15 +95,15 @@
 
                         <div class="movie-card__image-container">
                             <img *ngIf="isFavorited(movie) === true" (click)="toggleFavorite(movie)"
-                                src="../../assets/heart-full.png"
+                                src="assets/heart-full.png"
                                 style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 1" />
                             <img *ngIf="isFavorited(movie) === false" (click)="toggleFavorite(movie)"
-                                src="../../assets/heart.png"
+                                src="assets/heart.png"
                                 style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 0.85" />
 
                             <div class="imdb-rating-container">
                                 <div class="imdb-bubble">
-                                    <img class="imdb-svg" src="../../assets/imdb.svg" />
+                                    <img class="imdb-svg" src="assets/imdb.svg" />
                                     <div class="imdb-corner">
                                     </div>
                                 </div>
