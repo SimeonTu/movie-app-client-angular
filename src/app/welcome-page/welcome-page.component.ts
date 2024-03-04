@@ -11,10 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { UserRegistrationFormComponent } from '../user-registration-form/user-registration-form.component';
 import { UserLoginFormComponent } from '../user-login-form/user-login-form.component';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   standalone: true,
-  imports: [MatButtonModule, MatInputModule, MatCardModule, MatFormFieldModule, MatDialogModule, MatSnackBarModule, FormsModule],
+  imports: [MatButtonModule, MatInputModule, MatCardModule, MatFormFieldModule, MatDialogModule, MatSnackBarModule, FormsModule, MatDividerModule],
   selector: 'app-welcome-page',
   templateUrl: './welcome-page.component.html',
   styleUrls: ['./welcome-page.component.scss']

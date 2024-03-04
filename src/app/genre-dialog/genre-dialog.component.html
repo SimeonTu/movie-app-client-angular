@@ -1,0 +1,50 @@
+<mat-card>
+    <mat-card-content>
+
+        <div [ngSwitch]="genre" style="padding: 10px;">
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Action'">
+                Action movies typically feature high-intensity sequences of physical combat, stunts, and/or chases,
+                often involving heroes facing off against antagonists in thrilling and adrenaline-pumping scenarios.
+                These films are known for their fast-paced storytelling, dynamic visuals, and emphasis on excitement and
+                spectacle.</span>
+                <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Crime'">
+                Crime movies delve into the underworld of illicit activities, focusing on criminal protagonists or law
+                enforcement officers as they navigate through complex webs of deceit, corruption, and moral ambiguity in
+                pursuit of justice or personal gain. These films often explore themes of power, betrayal, and the
+                blurred lines between good and evil within society's underbelly.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Drama'">
+                Drama movies center on character-driven narratives that explore human emotions, relationships, and
+                conflicts in depth, often portraying realistic situations that resonate with audiences on an emotional
+                level. These films prioritize storytelling over action, aiming to evoke empathy, provoke thought, and
+                offer insights into the complexities of the human experience.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Sci-Fi'">
+                Sci-fi movies transport viewers to futuristic or speculative worlds where advanced technology,
+                extraterrestrial beings, or scientific concepts play central roles, often exploring themes such as space
+                exploration, artificial intelligence, and the consequences of scientific advancements on society. These
+                films stretch the boundaries of imagination, offering thought-provoking visions of potential futures and
+                alternate realities.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Animation'">
+                Animation movies utilize artistic techniques to bring characters, stories, and worlds to life through
+                the manipulation of images and visual effects, appealing to audiences of all ages. These films showcase
+                creativity and imagination, often exploring a wide range of genres from comedy and adventure to drama
+                and fantasy in captivating animated form.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Thriller'">
+                Thriller movies are characterized by suspenseful and gripping narratives that keep audiences on the edge
+                of their seats, often featuring high stakes, unexpected twists, and intense psychological tension. These
+                films typically revolve around protagonists facing imminent danger or pursuing elusive truths, creating
+                a palpable sense of excitement and anticipation throughout.
+            </span>
+            <mat-divider style="margin: 10px 0 10px 0;"></mat-divider>
+            <span>You might enjoy watching:</span>
+            <br />
+            <div style="display: inline-block; font-size: 1rem;font-weight: 400; margin: 10px 5px 0 0; padding: 3px 5px 3px 5px;
+            background-color: #606098; color: white"
+                *ngFor="let movie of genreMovies">{{movie}}</div>
+        </div>
+
+    </mat-card-content>
+</mat-card>

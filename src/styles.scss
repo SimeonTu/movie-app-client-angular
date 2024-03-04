@@ -1,3 +1,5 @@
+$base-color: #89e7f0;
+
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
@@ -20,13 +22,10 @@ $movie-app-client-angular-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$movie-app-client-angular-theme: mat.define-light-theme((
-  color: (
-    primary: $movie-app-client-angular-primary,
-    accent: $movie-app-client-angular-accent,
-    warn: $movie-app-client-angular-warn,
-  )
-));
+$movie-app-client-angular-theme: mat.define-light-theme((color: (primary: $movie-app-client-angular-primary,
+        accent: $movie-app-client-angular-accent,
+        warn: $movie-app-client-angular-warn,
+      )));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -35,5 +34,219 @@ $movie-app-client-angular-theme: mat.define-light-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #89e7f0;
+  margin: 0;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-weight: 600;
+}
+
+.success-snackbar {
+  white-space: pre-wrap;
+}
+
+mat-grid-list {
+  background-color: $base-color;
+
+  mat-grid-tile {
+    background-color: $base-color;
+    // margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    mat-card {
+      position: relative;
+      background-color: $base-color !important;
+      width: 100%;
+      height: 415px;
+      padding: 5px;
+      // border: 1px solid black;
+      border-radius: 7px;
+      box-shadow: unset !important;
+
+      .mat-card-header {
+        width: 90%;
+        // padding: 30px 0 0 0;
+
+        mat-card-title {
+          // width: ;
+          font-size: 1.1rem;
+          font-weight: 800;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          padding: 5px 10px 0 10px;
+        }
+
+        mat-card-subtitle {
+          color: rgb(28, 28, 28);
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          padding: 0 10px 5px 10px;
+        }
+
+      }
+
+      .movie-card__image-container {
+        position: relative;
+        margin: 0 auto;
+        max-width: 240px;
+        height: 350px;
+        cursor: pointer;
+
+
+        .movie-card__image {
+          object-fit: cover;
+          mask-image: linear-gradient(rgba(255, 255, 255, 1) 93%, rgba(255, 255, 255, 0));
+          // mask-image: linear-gradient(0deg,#201f31 0,rgba(32,31,49,0) 40%);
+          width: 100%;
+          max-width: 240px;
+          height: 350px;
+          // margin: -25px auto -25px auto;
+        }
+
+      }
+
+    }
+  }
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgb(28, 28, 28);
+  display: inline-block;
+  margin: 0 6px 2px 6px;
+}
+
+mat-toolbar {
+  background-color: #89e7f0 !important;
+  color: #121514 !important;
+
+  .heading {
+    font-weight: 800 !important;
+    font-size: 2rem !important;
+  }
+
+  a {
+    color: #121514 !important;
+  }
+
+  .logout-button {
+    margin-left: auto !important;
+    background-color: #606098 !important;
+    color: white !important;
+  }
+}
+
+.placeholder {
+  background-color: #606098;
+  animation: pulse 1.5s infinite alternate;
+  /* Animation effect */
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.imdb-rating-container {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  border-radius: 7px;
+  border: 2px solid #F5C518;
+  background-color: rgba(255, 255, 255, 1);
+  opacity: 0.95;
+  position: absolute;
+  bottom: 10px;
+  right: -5px;
+  z-index: 10;
+  transform: scale(0.7);
+
+  .imdb-bubble {
+    display: flex;
+    width: 50px;
+    background-color: #F5C518;
+
+    .imdb-svg {
+      width: 40px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .imdb-corner {
+      width: 0;
+      height: 0;
+      border-right: 10px solid transparent;
+      border-top: 30px solid #F5C518;
+    }
+  }
+
+  .imdb-rating {
+    padding-left: 20px;
+    padding-right: 15px;
+    font-weight: 800;
+  }
+}
+
+form {
+  @include mat.form-field-density(-1);
+}
+
+.profile-button {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 100ms !important;
+}
+
+.accent-button {
+  background-color: #606098 !important;
+  color: white !important;
+}
+
+.mat-mdc-raised-button[disabled] {
+  background-color: rgba(0, 0, 0, 0.25) !important;
+  color: var(--mdc-protected-button-disabled-label-text-color) !important;
+}
+
+.profile-container {
+  margin: 0 10px;
+}
+
+.movie-dialog-pills {
+  display: inline-block;
+  font-size: 0.9rem;
+  padding: 0 0.75rem;
+  color: black;
+  border: 1px solid black;
+  border-radius: 1rem;
+  background-color: rgb(255, 255, 255, 0.2);
+}
+
+mat-dialog-container,
+.mat-mdc-dialog-container,
+.mdc-dialog__surface {
+  background: transparent !important;
+}
+
+@media only screen and (min-width: 599.98px) {
+  .profile-container {
+    margin: 0 60px;
+  }
+}

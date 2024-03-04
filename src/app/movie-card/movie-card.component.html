@@ -1,30 +1,138 @@
-<div style="display: flex;">
-    <mat-card *ngFor="let movie of movies;" style="flex: 1 1 auto;">
-        <mat-card-header>
-        <mat-card-title>{{movie.title}}</mat-card-title>
-            <mat-card-subtitle>Directed by: {{movie.director.Name}}</mat-card-subtitle>
-        </mat-card-header>
-        <img src={{movie.image}} alt= {{movie.title}} />
-        <mat-card-actions>
-            <button
-                mat-button
-                color="primary"
-            >
-                Genre
-            </button>
-            <button
-                mat-button
-                color="primary"
-            >
-                Director
-            </button>
-            <button
-                mat-button
-                color="primary"
-            >
-                Synopsis
-            </button>
-            <mat-icon>favorite_border</mat-icon>
-        </mat-card-actions>
-    </mat-card>
+<div>
+
+    <app-navbar></app-navbar>
+
+    <form style="display: flex; justify-content: center;">
+        <mat-form-field style="width: 90%; margin: 0 auto;">
+            <input matInput [(ngModel)]="value" (ngModelChange)="inputChanged($event)" placeholder="Search for movies"
+                type="text" name="Search" required />
+        </mat-form-field>
+    </form>
+
+    <mat-grid-list [cols]="(currentRange)" rowHeight="425px">
+
+        <!-- <div style="width: 225px; height: 225px; background-color: yellow;"></div> -->
+
+        <ng-container *ngIf="loading; else movieCard">
+            <mat-grid-tile *ngFor="let item of [1,2,3,4,5,6];">
+                <mat-card>
+
+                    <div style="width: 240px;" class="movie-card__image-container placeholder">
+                        <!-- <img src="../../assets/heart.png"
+                            style="position: absolute; top: 10px; right: 10px; z-index: 9999; width: 24px; opacity: 0.9" /> -->
+
+                        <div style="width: 100%; height: 350px;"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; flex-direction: column;"
+                        class="mat-card-header">
+                        <div class="placeholder" style="width: 150px; height: 23px; margin: 5px 10px 0 10px;"></div>
+                        <div style="margin: 3px 10px 5px 10px; display: flex; align-items: center;">
+                            <div class="placeholder" style="width: 50px; height: 20px;"></div>
+                            <span style="background: #606098;" class="dot"></span>
+                            <div class="placeholder" style="width: 150px; height: 20px;"></div>
+                        </div>
+                    </div>
+
+                </mat-card>
+            </mat-grid-tile>
+        </ng-container>
+
+        <ng-template #movieCard>
+            <ng-container *ngIf="filteredMov.length > 0 || filteredMov.error; else moviesList">
+
+                <ng-container *ngIf="filteredMov.error">
+                    <p>{{filteredMov.error}}</p>
+                </ng-container>
+
+                <ng-container *ngIf="!filteredMov.error">
+                    <mat-grid-tile *ngFor="let movie of filteredMov;">
+
+                        <mat-card>
+
+                            <div class="movie-card__image-container">
+                                <img *ngIf="isFavorited(movie) === true" (click)="toggleFavorite(movie)"
+                                    [style.pointerEvents]="favDisabled ? 'none' : 'auto'"
+                                    src="../../assets/heart-full.png"
+                                    style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 1" />
+                                <img *ngIf="isFavorited(movie) === false" (click)="toggleFavorite(movie)"
+                                    [style.pointerEvents]="favDisabled ? 'none' : 'auto'" src="../../assets/heart.png"
+                                    style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 0.85" />
+
+                                <div class="imdb-rating-container">
+                                    <div class="imdb-bubble">
+                                        <img class="imdb-svg" src="../../assets/imdb.svg" />
+                                        <div class="imdb-corner">
+                                        </div>
+                                    </div>
+
+                                    <div class="imdb-rating">
+                                        {{movie.rating}}</div>
+                                </div>
+
+                                <img (click)="openMovieDialog(movie)" class="movie-card__image" src={{movie.image}}
+                                    alt={{movie.title}} />
+                            </div>
+
+                            <div class="mat-card-header">
+                                <mat-card-title>{{movie.title}}</mat-card-title>
+                                <mat-card-subtitle>
+                                    <span>{{movie.genre.Name}}</span>
+                                    <span class="dot"></span>
+                                    <span class="director-name">{{movie.director.Name}}</span>
+                                </mat-card-subtitle>
+                            </div>
+
+                        </mat-card>
+                    </mat-grid-tile>
+                </ng-container>
+            </ng-container>
+
+            <!-- MOVIES LIST -->
+            <ng-template #moviesList>
+                <mat-grid-tile *ngFor="let movie of movies;">
+                    <mat-card>
+
+                        <div class="movie-card__image-container">
+                            <img *ngIf="isFavorited(movie) === true" (click)="toggleFavorite(movie)"
+                                src="../../assets/heart-full.png"
+                                style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 1" />
+                            <img *ngIf="isFavorited(movie) === false" (click)="toggleFavorite(movie)"
+                                src="../../assets/heart.png"
+                                style="position: absolute; top: 10px; right: 10px; z-index: 10; width: 24px; opacity: 0.85" />
+
+                            <div class="imdb-rating-container">
+                                <div class="imdb-bubble">
+                                    <img class="imdb-svg" src="../../assets/imdb.svg" />
+                                    <div class="imdb-corner">
+                                    </div>
+                                </div>
+
+                                <div class="imdb-rating">
+                                    {{movie.rating}}</div>
+                            </div>
+
+                            <img (click)="openMovieDialog(movie)" class="movie-card__image" src={{movie.image}}
+                                alt={{movie.title}} />
+                        </div>
+
+                        <div class="mat-card-header">
+                            <mat-card-title>{{movie.title}}</mat-card-title>
+                            <mat-card-subtitle>
+                                <button style="padding: 0; height: 22px; min-width: unset;" mat-button
+                                    (click)="openGenreDialog(movie)">{{movie.genre.Name}}</button>
+                                <span class="dot"></span>
+                                <button class="director-name" style="padding: 0; height: 22px;" mat-button
+                                    (click)="openDirectorDialog(movie)">{{movie.director.Name}}</button>
+                            </mat-card-subtitle>
+                        </div>
+
+                    </mat-card>
+                </mat-grid-tile>
+            </ng-template>
+        </ng-template>
+
+    </mat-grid-list>
+
+
 </div>

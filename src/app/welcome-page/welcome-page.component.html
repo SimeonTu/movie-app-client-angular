@@ -1,12 +1,16 @@
-<div class="main-page">
-    <h1>
-      Welcome to myFlix!
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <h1 style="font-size: 3rem; margin-bottom: 0.25rem;">
+        Welcome to IFDb!
     </h1>
-    <!-- Adding the click event on the signup button -->
-    <button mat-raised-button (click)="openUserRegistrationDialog()" style="margin-right: 10px;" color="primary">
-      Sign Up
-    </button>
-    <button mat-raised-button (click)="openUserLoginDialog()" color="primary">
-      Login
-    </button>
-  </div>
+
+    <mat-divider style="margin-bottom: 1rem; border-top-color: rgba(0,0,0,0.65)"></mat-divider>
+
+    <div style="display: flex; justify-content: center;">
+        <button mat-raised-button (click)="openUserLoginDialog()" style="margin-right: 10px;" class="accent-button">
+            Login
+        </button>
+        <button mat-raised-button (click)="openUserRegistrationDialog()" class="accent-button">
+            Sign Up
+        </button>
+    </div>
+</div>

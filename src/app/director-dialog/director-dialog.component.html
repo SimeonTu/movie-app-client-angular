@@ -1,0 +1,62 @@
+<mat-card>
+    <mat-card-content>
+        <h2 style="margin: 0.25rem 0 1rem 0">{{data.movie.director.Name}}</h2>
+
+        <mat-divider style="margin: 10px 0 10px 0"></mat-divider>
+
+        <div [ngSwitch]="director">
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Quentin Tarantino'">
+                Quentin Tarantino is an American filmmaker known for his distinctive style characterized by nonlinear
+                storytelling, sharp dialogue, and eclectic references to pop culture. He rose to prominence with films
+                like "Pulp Fiction" and "Reservoir Dogs," and his works often blend elements of crime, violence, and
+                dark humor, earning him critical acclaim and a dedicated fan base.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Francis Ford Coppola'">
+                Francis Ford Coppola is an American filmmaker celebrated for his influential contributions to cinema,
+                notably directing "The Godfather" trilogy and "Apocalypse Now." Renowned for his visionary storytelling
+                and innovative techniques, Coppola has left an indelible mark on the film industry, earning multiple
+                Academy Awards and establishing himself as one of the most esteemed directors of his generation.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Christopher Nolan'">
+                Christopher Nolan is a British-American filmmaker renowned for his intricate narratives, inventive
+                storytelling techniques, and visually stunning cinematography. With blockbuster hits like "Inception"
+                and "The Dark Knight Trilogy," Nolan has solidified his reputation as a master of modern cinema.
+            </span>
+
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Robert Zemeckis'">
+                Robert Zemeckis is an American director known for his versatility and innovation in storytelling, with
+                iconic films such as "Forrest Gump" and the "Back to the Future" series. His works often blend elements
+                of fantasy, adventure, and cutting-edge visual effects, captivating audiences worldwide.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Ridley Scott'">
+                Ridley Scott is a British filmmaker acclaimed for his epic scope, stunning visuals, and immersive
+                storytelling, evident in classics like "Blade Runner" and "Gladiator." With a prolific career spanning
+                decades, Scott continues to push the boundaries of cinematic storytelling, cementing his status as a
+                visionary director.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Roger Allers'">
+                Roger Allers is an American director recognized for his contributions to animated cinema, notably
+                co-directing Disney's "The Lion King." His work often emphasizes rich storytelling, vibrant animation,
+                and memorable characters, leaving a lasting impact on audiences of all ages.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'The Wachowskis'">
+                The Wachowskis, consisting of siblings Lana and Lilly, are visionary filmmakers known for their
+                groundbreaking work in the science fiction genre, particularly with "The Matrix" trilogy. Their films
+                often explore complex philosophical themes, augmented by innovative visual effects and compelling
+                narratives.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Jonathan Demme'">
+                Jonathan Demme was an American director celebrated for his diverse filmography spanning genres, from the
+                iconic thriller "The Silence of the Lambs" to the heartfelt drama "Philadelphia." Known for his
+                sensitive direction and ability to elicit powerful performances, Demme left an indelible mark on the
+                world of cinema.
+            </span>
+            <span style="font-style: italic; font-size: 1.15rem;" *ngSwitchCase="'Frank Darabont'">
+                Frank Darabont is an American filmmaker acclaimed for his compelling storytelling and poignant character
+                dramas, notably directing "The Shawshank Redemption" and "The Green Mile." His films often resonate with
+                audiences for their emotional depth, thematic richness, and masterful craftsmanship.
+            </span>
+
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,48 @@
+<div style="background-color: rgba(137, 231, 240, 0.95); border-radius: 1rem;">
+
+    <h1 style="margin: 1rem 0 0.5rem 0; text-align: center; font-weight: 800;">{{data.movie.title}}</h1>
+
+
+    <div style="width: 400px; margin: 0 auto; position: relative;" class="movie-card__image-container">
+
+
+        <div style="transform: scale(0.75); right: 15px; bottom: 25px;" class="imdb-rating-container">
+            <div class="imdb-bubble">
+                <img class="imdb-svg" src="../../assets/imdb.svg" />
+                <div class="imdb-corner">
+                </div>
+            </div>
+
+            <div class="imdb-rating">
+                {{data.movie.rating}}</div>
+        </div>
+
+        <img style="width: 400px;" class="movie-card__image" src={{data.movie.image}} alt={{data.movie.title}} />
+    </div>
+
+    <div style="padding: 0.5rem 1rem 1rem 1rem;" class="mat-card-header">
+
+        <mat-card-subtitle>
+            <div class="movie-dialog-pills">
+                {{data.movie.genre.Name}}
+            </div>
+
+            <span class="dot"></span>
+
+            <div class="movie-dialog-pills">
+                {{data.movie.director.Name}}
+            </div>
+
+            <span class="dot"></span>
+
+            <div class="movie-dialog-pills">
+                {{data.movie.releaseYear}}
+            </div>
+        </mat-card-subtitle>
+
+        <div style="margin-top: 0.75rem; font-size: 1.1rem;">{{data.movie.description}}</div>
+    </div>
+
+
+
+</div>
