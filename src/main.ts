@@ -4,3 +4,5 @@ import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
+
+// deploy with "ng deploy --base-href=/<repository-name>/"
