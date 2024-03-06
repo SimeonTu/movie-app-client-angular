@@ -19,6 +19,9 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
+/**
+ * Represents a component responsible for displaying movie cards.
+ */
 @Component({
   standalone: true,
   imports: [
@@ -42,25 +45,72 @@ import { FormsModule } from '@angular/forms';
 })
 export class MovieCardComponent implements OnInit {
 
+  /**
+   * Array of movies retrieved from the API.
+   */
   movies: any = [];
+
+  /**
+   * Filtered array of movies based on search input.
+   */
   filteredMov: any = [];
 
+  /**
+   * Represents the current screen size range.
+   */
   currentRange?: string;
+
+  /**
+   * Represents the username of the logged-in user.
+   */
   username: any = localStorage.getItem('user');
+
+  /**
+   * Represents the user object retrieved from the API.
+   */
   user: any;
+
+  /**
+   * Represents the loading state of the component.
+   */
   loading: boolean = true;
+
+  /**
+   * Represents the state of favorite button disabling during API requests.
+   */
   favDisabled: boolean = false;
 
+  /**
+   * Input value bound to the component.
+   */
   @Input() value: any;
 
   constructor(
+    /**
+     * Service for fetching data from the IFDb API.
+     */
     public fetchApiData: IFDbAPIservice,
+    /**
+     * Dialog service for displaying dialogs.
+     */
     public dialog: MatDialog,
+    /**
+     * Service for observing breakpoints for responsiveness.
+     */
     private breakpointObserver: BreakpointObserver,
+    /**
+     * Router service for navigation.
+     */
     private router: Router,
+    /**
+     * Service for displaying snack bar notifications.
+     */
     public snackBar: MatSnackBar
   ) { };
 
+  /**
+   * Lifecycle hook called after component initialization.
+   */
   async ngOnInit() {
     console.log("loaded");
 
@@ -104,6 +154,10 @@ export class MovieCardComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles input change event for filtering movies.
+   * @param event - Input change event object.
+   */
   inputChanged(event: any) {
     console.log(event)
     console.log(this.movies);
@@ -122,20 +176,13 @@ export class MovieCardComponent implements OnInit {
       }
     } else this.filteredMov = {}
 
-
-
-    // if (this.filteredMov.length != 0) {
-    //   console.log("yep", this.filteredMov);
-    //   GlobalConstants.filteredMovies = this.filteredMov
-    // } else {
-    //   console.log("no movies found");
-    //   GlobalConstants.filteredMovies = {}
-    // }
-
     console.log("\n\nfilteredMovies value:", this.filteredMov, "\n\ntype of filmov:", typeof this.filteredMov);
-
   }
 
+  /**
+   * Fetches all movies from the API.
+   * @returns Promise that resolves when movies are fetched.
+   */
   getMovies() {
     return new Promise<void>((resolve, reject) => {
       this.fetchApiData.getAllMovies().subscribe((resp: any) => {
@@ -146,6 +193,10 @@ export class MovieCardComponent implements OnInit {
     })
   }
 
+  /**
+   * Fetches user data from the API.
+   * @returns Promise that resolves when user data is fetched.
+   */
   getUser() {
     return new Promise<void>((resolve, reject) => {
       this.fetchApiData.getUser(this.username).subscribe((resp: any) => {
@@ -157,6 +208,10 @@ export class MovieCardComponent implements OnInit {
     })
   }
 
+  /**
+   * Opens movie dialog.
+   * @param movie - Movie object to display in the dialog.
+   */
   openMovieDialog(movie: any): void {
     this.dialog.open(MovieDialogComponent, {
       width: '400px',
@@ -166,6 +221,10 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
+  /**
+   * Opens genre dialog.
+   * @param movie - Movie object to display in the dialog.
+   */
   openGenreDialog(movie: any): void {
     this.dialog.open(GenreDialogComponent, {
       width: '450px',
@@ -176,6 +235,10 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
+  /**
+   * Opens director dialog.
+   * @param movie - Movie object to display in the dialog.
+   */
   openDirectorDialog(movie: any): void {
     this.dialog.open(DirectorDialogComponent, {
       width: '450px',
@@ -186,6 +249,11 @@ export class MovieCardComponent implements OnInit {
     });
   }
 
+  /**
+   * Checks if the movie is favorited by the user.
+   * @param movie - Movie object to check for favorite status.
+   * @returns Boolean indicating whether the movie is favorited.
+   */
   isFavorited(movie: any) {
     if (this.user) {
       if (this.user.FavoriteMovies.includes(movie.id)) {
@@ -195,6 +263,10 @@ export class MovieCardComponent implements OnInit {
     } else return false
   }
 
+  /**
+   * Toggles the favorite status of a movie.
+   * @param movie - Movie object to toggle favorite status.
+   */
   toggleFavorite(movie: any) {
     if (this.user.FavoriteMovies.includes(movie.id)) {
       console.log("removing from favs")
@@ -207,9 +279,11 @@ export class MovieCardComponent implements OnInit {
 
         this.favDisabled = false
 
-        // trigger a component reload by navigating to the samem route
+        // trigger a component reload by navigating to the same route
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['movies']);
+          this
+
+            .router.navigate(['movies']);
         });
 
         this.snackBar.open(`${movie.title} was removed from favorites.\nYou can view your favorites from your profile.`, 'OK', {
@@ -228,7 +302,7 @@ export class MovieCardComponent implements OnInit {
 
         this.favDisabled = false
 
-        // trigger a component reload by navigating to the samem route
+        // trigger a component reload by navigating to the same route
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate(['movies']);
         });

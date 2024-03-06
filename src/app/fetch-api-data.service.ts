@@ -6,16 +6,25 @@ import { log } from 'console';
 //Declaring the api url that will provide data for the client app
 const apiUrl = 'https://fathomless-everglades-10625-ad628eacb5b5.herokuapp.com/https://ifdbase-c6a1086fce3e.herokuapp.com/';
 
+/**
+ * Service for interfacing with the IFDb API to handle user authentication and movie data retrieval.
+ */
 @Injectable({
   providedIn: 'root'
 })
-
 export class IFDbAPIservice {
-  // Inject the HttpClient module to the constructor params
-  // This will provide HttpClient to the entire class, making it available via this.http
-  constructor(private http: HttpClient) {
-  }
-  // Making the api call for the user registration endpoint
+
+  /**
+   * Initializes the service with HttpClient for HTTP requests.
+   * @param http - Angular HttpClient module for making HTTP requests.
+   */
+  constructor(private http: HttpClient) { }
+
+  /**
+   * Makes a POST request to register a new user.
+   * @param userDetails - Details of the user to be registered.
+   * @returns Observable that resolves to the response from the API.
+   */
   public userRegistration(userDetails: any): Observable<any> {
     console.log(userDetails);
     return this.http.post(apiUrl + 'users', userDetails).pipe(
@@ -23,6 +32,11 @@ export class IFDbAPIservice {
     );
   }
 
+  /**
+   * Makes a POST request to authenticate a user.
+   * @param userDetails - Details of the user to be authenticated.
+   * @returns Observable that resolves to the response from the API.
+   */
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
     return this.http.post(apiUrl + 'login', userDetails).pipe(
@@ -30,7 +44,10 @@ export class IFDbAPIservice {
     );
   }
 
-  // get all movies from IFDb api and then attach image URLs to each movie object from TFDb
+  /**
+   * Retrieves all movies from the IFDb API and attaches image URLs to each movie object.
+   * @returns Observable that resolves to an array of movies with image URLs.
+   */
   getAllMovies(): Observable<any> {
     // only execute when in browser, otherwise we get localStorage is not defined error, as localStorage is not a thing on the backend
     if (typeof window !== 'undefined') {
@@ -85,6 +102,11 @@ export class IFDbAPIservice {
     } else return EMPTY //return empty observable if code is not run in browser
   }
 
+  /**
+   * Retrieves a single movie by its title.
+   * @param title - Title of the movie to retrieve.
+   * @returns Observable that resolves to the response from the API.
+   */
   getOneMovie(title: string): Observable<any> {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.get(apiUrl + 'movies/' + title, {
@@ -98,6 +120,10 @@ export class IFDbAPIservice {
     );
   }
 
+  /**
+   * Retrieves movies by genre.
+   * @returns Observable that resolves to the response from the API.
+   */
   getGenre(): Observable<any> {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.get(apiUrl + 'movies/genre/:Name', {
@@ -111,13 +137,11 @@ export class IFDbAPIservice {
     );
   }
 
-  // getUser(): Observable<any> {
-  //   //checking if code is running in the browser to avoid getting "localStorage is not defined"
-  //   const user = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || '{}') : null;
-  //   return user;
-  // }
-
-  // get user info (including favorite movies)
+  /**
+   * Retrieves user information, including favorite movies.
+   * @param username - Username of the user to retrieve information for.
+   * @returns Observable that resolves to the response from the API.
+   */
   getUser(username: string): Observable<any> {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     return this.http.get(apiUrl + 'users/' + username, {
@@ -131,6 +155,11 @@ export class IFDbAPIservice {
     );
   }
 
+  /**
+   * Adds a movie to the user's favorites.
+   * @param movie - Movie object to add to favorites.
+   * @returns Observable that resolves to the response from the API.
+   */
   addFavoriteMovie(movie: any): Observable<any> {
     const user = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -152,6 +181,11 @@ export class IFDbAPIservice {
     );
   }
 
+  /**
+   * Deletes a movie from the user's favorites.
+   * @param movie - Movie object to remove from favorites.
+   * @returns Observable that resolves to the response from the API.
+   */
   deleteFavoriteMovie(movie: any): Observable<any> {
     const user = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -173,6 +207,11 @@ export class IFDbAPIservice {
     );
   }
 
+  /**
+   * Edits user information.
+   * @param data - Updated user data.
+   * @returns Observable that resolves to the response from the API.
+   */
   editUser(data: any): Observable<any> {
     console.log(data);
     const user = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
@@ -188,6 +227,11 @@ export class IFDbAPIservice {
     );
   }
 
+  /**
+   * Deletes a user.
+   * @param user - User object to be deleted.
+   * @returns Observable that resolves to the response from the API.
+   */
   deleteUser(user: any): Observable<any> {
     // const user = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || '{}') : null;
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -202,11 +246,21 @@ export class IFDbAPIservice {
     );
   }
 
+  /**
+   * Extracts response data from the HTTP response.
+   * @param res - HTTP response object.
+   * @returns Extracted response data.
+   */
   private extractResponseData(res: any): any {
     const body = res
     return body || {}
   }
 
+  /**
+   * Handles errors occurred during HTTP requests.
+   * @param error - HTTP error response object.
+   * @returns Observable that emits an error message.
+   */
   private handleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);

@@ -47,32 +47,119 @@ import { DirectorDialogComponent } from '../director-dialog/director-dialog.comp
 
 export class ProfileViewComponent implements OnInit {
 
+  /**
+   * Form control for the username input field.
+   */
   usernameForm = new FormControl('', [Validators.required]);
+
+  /**
+   * Form control for the password input field.
+   */
   passwordForm = new FormControl('', [Validators.required]);
+
+  /**
+   * Form control for the email input field.
+   */
   emailForm = new FormControl('', [Validators.required, Validators.email]);
+
+  /**
+   * Form control for the birthday input field.
+   */
   birthdayForm = new FormControl('', [Validators.required]);
 
+  /**
+   * The current username retrieved from local storage.
+   */
   username: any = localStorage.getItem('user');
+
+  /**
+   * Object representing the user profile data.
+   */
   user: any;
+
+  /**
+   * Array containing all movies retrieved from the API.
+   */
   movies: any;
+
+  /**
+   * Object containing the favorite movies of the user.
+   */
   favMovies: any = {};
+
+  /**
+   * Current range value for responsive design.
+   */
   currentRange?: string = "2";
+
+  /**
+   * Flag indicating whether data is still loading.
+   */
   loading: boolean = true;
+
+  /**
+   * Timer value for the delete account button cooldown.
+   */
   timer: any = 5;
+
+  /**
+   * Interval ID for the cooldown timer.
+   */
   cooldown: any;
 
+  /**
+   * Flag indicating whether the username is being changed.
+   */
   changeUsername: boolean = false;
+
+  /**
+   * Flag indicating whether the password is being changed.
+   */
   changePassword: boolean = false;
+
+  /**
+   * Flag indicating whether the email is being changed.
+   */
   changeEmail: boolean = false;
+
+  /**
+   * Flag indicating whether the birthday is being changed.
+   */
   changeBirthday: boolean = false;
+
+  /**
+   * Flag indicating whether the account deletion is confirmed.
+   */
   deleteAccount: boolean = false;
 
+  /**
+   * New username value for updating the user profile.
+   */
   newUsername: string = "";
+
+  /**
+   * New password value for updating the user profile.
+   */
   newPassword?: number;
-  newEmail: string = ""
+
+  /**
+   * New email value for updating the user profile.
+   */
+  newEmail: string = "";
+
+  /**
+   * New birthday value for updating the user profile.
+   */
   newBirthday: any;
 
+  /**
+   * Minimum date allowed for the birthday input field.
+   */
   minDate: Date = new Date('1900-01-01');
+
+  /**
+   * Maximum date allowed for the birthday input field.
+   */
   maxDate: Date = new Date();
 
   constructor(
@@ -81,9 +168,11 @@ export class ProfileViewComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     public snackBar: MatSnackBar
-  ) {
+  ) { }
 
-  }
+  /**
+   * Lifecycle hook called after component initialization.
+   */
 
   async ngOnInit() {
 
@@ -130,6 +219,9 @@ export class ProfileViewComponent implements OnInit {
     }
   }
 
+  /**
+ * Toggles the delete account button state and starts or stops the cooldown timer.
+ */
   deleteBtnTimer() {
     this.deleteAccount = !this.deleteAccount
 
@@ -154,10 +246,18 @@ export class ProfileViewComponent implements OnInit {
 
   }
 
+  /**
+ * Returns the error message for the username input field.
+ * @returns Error message for invalid username.
+ */
   getUserErrorMessage() {
     return 'Username must be at least 3 characters';
   }
 
+  /**
+   * Returns the error message for the email input field.
+   * @returns Error message for invalid email.
+   */
   getEmailErrorMessage() {
     if (this.emailForm.hasError('required')) {
       return 'Email is required';
@@ -166,6 +266,10 @@ export class ProfileViewComponent implements OnInit {
     return this.emailForm.hasError('email') ? 'Not a valid email' : '';
   }
 
+  /**
+ * Returns the error message for the birthday input field.
+ * @returns Error message for invalid birthday.
+ */
   getBirthdayErrorMessage() {
     if (this.birthdayForm.hasError('matDatepickerMin') || this.birthdayForm.hasError('matDatepickerMax')) {
       return 'Your date is out of range'
@@ -178,6 +282,10 @@ export class ProfileViewComponent implements OnInit {
     return this.emailForm.hasError('required') ? 'Please enter a date' : '';
   }
 
+  /**
+ * Retrieves all movies from the API.
+ * @returns A Promise that resolves when movies are successfully retrieved.
+ */
   getMovies() {
     return new Promise<void>((resolve, reject) => {
       this.fetchApiData.getAllMovies().subscribe((resp: any) => {
@@ -188,6 +296,10 @@ export class ProfileViewComponent implements OnInit {
     })
   }
 
+  /**
+ * Opens a dialog to display the genres of a movie.
+ * @param movie - The movie object to display the genres for.
+ */
   openGenreDialog(movie: any): void {
     this.dialog.open(GenreDialogComponent, {
       width: '450px',
@@ -198,6 +310,10 @@ export class ProfileViewComponent implements OnInit {
     });
   }
 
+  /**
+ * Opens a dialog to display the director of a movie.
+ * @param movie - The movie object to display the director for.
+ */
   openDirectorDialog(movie: any): void {
     this.dialog.open(DirectorDialogComponent, {
       width: '450px',
@@ -208,6 +324,10 @@ export class ProfileViewComponent implements OnInit {
     });
   }
 
+  /**
+ * Retrieves the user profile data from the API.
+ * @returns A Promise that resolves when the user profile data is successfully retrieved.
+ */
   getUserProfile() {
     return new Promise<void>((resolve, reject) => {
       this.fetchApiData.getUser(this.username).subscribe((resp: any) => {
@@ -230,6 +350,9 @@ export class ProfileViewComponent implements OnInit {
     })
   }
 
+  /**
+ * Updates the username of the user.
+ */
   updateUsername() {
     let data = { Username: this.newUsername }
 
@@ -251,6 +374,9 @@ export class ProfileViewComponent implements OnInit {
     })
   }
 
+  /**
+ * Updates the password of the user.
+ */
   updatePassword() {
     let data = { Password: this.newPassword }
 
@@ -269,6 +395,9 @@ export class ProfileViewComponent implements OnInit {
     })
   }
 
+  /**
+ * Updates the email of the user.
+ */
   updateEmail() {
     // accessing the email input value directly using reactive forms
     let data = { Email: this.emailForm.value }
@@ -289,6 +418,9 @@ export class ProfileViewComponent implements OnInit {
     })
   }
 
+  /**
+ * Updates the birthday of the user.
+ */
   updateBirthday() {
     // accessing the email input value directly using reactive forms
     console.log(this.birthdayForm.value);
@@ -313,6 +445,10 @@ export class ProfileViewComponent implements OnInit {
     })
   }
 
+  /**
+ * Deletes the user account.
+ * @param user - The user object representing the account to be deleted.
+ */
   deleteUserAccount(user: any) {
     this.fetchApiData.deleteUser(user).subscribe((resp: any) => {
 
@@ -335,6 +471,10 @@ export class ProfileViewComponent implements OnInit {
     })
   }
 
+  /**
+ * Opens a dialog to display movie details.
+ * @param movie - The movie object to display details for.
+ */
   openMovieDialog(movie: any): void {
     this.dialog.open(MovieDialogComponent, {
       width: '450px',
@@ -344,6 +484,11 @@ export class ProfileViewComponent implements OnInit {
     });
   }
 
+  /**
+ * Checks if a movie is favorited by the user.
+ * @param movie - The movie object to check for favorited status.
+ * @returns True if the movie is favorited, otherwise false.
+ */
   isFavorited(movie: any) {
     if (this.user.FavoriteMovies.includes(movie.id)) {
       // console.log("yep")
@@ -351,6 +496,10 @@ export class ProfileViewComponent implements OnInit {
     } else return false
   }
 
+  /**
+ * Toggles the favorite status of a movie.
+ * @param movie - The movie object to toggle the favorite status for.
+ */
   toggleFavorite(movie: any) {
     if (this.user.FavoriteMovies.includes(movie.id)) {
       console.log("removing from favs")

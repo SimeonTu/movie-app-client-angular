@@ -29,28 +29,45 @@ import { Router } from '@angular/router';
 })
 export class UserLoginFormComponent implements OnInit {
 
+  /**
+  * Input property to store user login data.
+  */
   @Input() userData = { username: '', password: '' };
 
+  /**
+   * Constructs a new UserLoginFormComponent instance.
+   * @param fetchApiData - The service for fetching API data.
+   * @param dialogRef - Reference to the dialog opened by the parent component.
+   * @param snackBar - Reference to the snackbar component for displaying messages.
+   * @param router - The Angular router service for navigation.
+   */
   constructor(
     public fetchApiData: IFDbAPIservice,
-    public dialogRef: MatDialogRef<AppComponent>,
+    public dialogRef: MatDialogRef<any>,
     public snackBar: MatSnackBar,
-    private router: Router) { }
+    private router: Router
+  ) { }
 
+  /**
+   * Lifecycle hook called after component initialization.
+   */
   ngOnInit(): void {
   }
 
-  // This is the function responsible for sending the form inputs to the backend
+  /**
+   * Sends user login data to the backend for authentication.
+   * Displays success or error messages accordingly.
+   */
   login(): void {
     this.fetchApiData.userLogin(this.userData).subscribe((result) => {
       // Logic for a successful user registration goes here! (To be implemented)
-      
+
       console.log(result);
 
       // save username and token in local storage
       localStorage.setItem("user", result.user.Username)
       localStorage.setItem("token", result.token)
-      
+
       // This will close the modal on success!
       this.dialogRef.close();
 
@@ -69,6 +86,5 @@ export class UserLoginFormComponent implements OnInit {
       });
     });
   }
-
 
 }
