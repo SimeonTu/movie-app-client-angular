@@ -8,6 +8,8 @@ The goal of this project is to build a version of a frontend for the IFDb web ap
 
 You can find the page for the backend of the web app [here](https://github.com/SimeonTu/movie-app).
 
+Documentation is available in ```docs/index.html```
+
 [Link to the live site](https://simeontu.github.io/movie-app-client-angular/)
 
 ![IFDb Angular home page](https://i.imgur.com/739nkeo.png)
